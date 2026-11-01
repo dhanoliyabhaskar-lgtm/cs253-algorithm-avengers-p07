@@ -1,0 +1,15 @@
+﻿# Binaries and build output
+bin/
+build/
+*.o
+*.out
+*.exe
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+
+# Temporary and log files
+*.log
+results/raw/*.tmp
