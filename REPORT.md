@@ -1,4 +1,3 @@
-```markdown
 # Project Report: Lazy Propagation and What Composes
 
 Team Algorithm Avengers — CS 253 / MA 253
