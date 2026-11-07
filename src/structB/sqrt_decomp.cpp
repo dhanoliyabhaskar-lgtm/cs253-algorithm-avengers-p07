@@ -34,6 +34,30 @@ struct structB{
       }
     }
   }
+
+  void push(int b, int n, int size){
+    if(blocks[b].gain==1 && blocks[b].offset==0) return;
+    int start=b*size;
+    int end=min((b+1)*size,n);
+    for(int i=start;i<end;i++){
+      sensors[i]=blocks[b].gain*sensors[i]+blocks[b].offset;
+    }
+  }
+
+  void rebuild(int b, int n, int size){
+    int start=b*size;
+    int end=min((b+1)*size,n);
+    block_state& w=blocks[b];
+    w.mn=sensors[start];
+    w.mx=sensors[start];
+    w.sum=sensors[start];
+    for(int i=start+1;i<end;i++){
+      w.mn=min(w.min,sensors[i]);
+      w.mx=max(w.mx,sensors[i]);
+      w.sum=(w.sum+sensors[i]%MOD)%MOD;
+    }
+  }
+
   void display(){
     for(block_state q : blocks){
       cout<<q.mn<<" "<<q.mx<<" "<<q.sum<<"\n";
