@@ -17,6 +17,7 @@ struct block_state{
 struct structB{
   int n;
   int size;
+  ll ops=0;
   vector<ll> sensors;
   vector<block_state> blocks;
   structB(int len, vector<ll> &initial){
@@ -41,6 +42,7 @@ struct structB{
 
   void push(int b){
     if(blocks[b].gain==1 && blocks[b].offset==0) return;
+    ops+=size;
     int start=b*size;
     int end=min((b+1)*size,n);
     for(int i=start;i<end;i++){
@@ -54,6 +56,7 @@ struct structB{
   void rebuild(int b){
     int start=b*size;
     int end=min((b+1)*size,n);
+    ops+=3*size;
     block_state& w=blocks[b];
     w.mn=sensors[start];
     w.mx=sensors[start];
@@ -68,6 +71,7 @@ struct structB{
 
   void comp_upd(int b, ll g, ll o){
     block_state& w=blocks[b];
+    ops+=3;
     w.mn=w.mn*g+o;
     w.mx=w.mx*g+o;
     if(g<0) swap(w.mn,w.mx);
@@ -89,6 +93,7 @@ struct structB{
         int s=max(start,l);
         int e=min(end,r);
         for(int i=s;i<=e;i++){
+          ops++;
           sensors[i]=sensors[i]*g+o;
         }
         rebuild(b);
@@ -104,6 +109,7 @@ struct structB{
       int l=b*size;
       int r=min((b+1)*size-1,n-1);
       if(l>=start && r<=end){
+        ops++;
         mini=min(mini,blocks[b].mn);
       }
       else{
@@ -111,6 +117,7 @@ struct structB{
         int s=max(start,l);
         int e=min(end,r);
         for(int i=s;i<=e;i++){
+          ops++;
           mini=min(sensors[i],mini);
         }
       }
@@ -126,6 +133,7 @@ struct structB{
       int l=b*size;
       int r=min((b+1)*size-1,n-1);
       if(l>=start && r<=end){
+        ops++;
         maxi=max(maxi,blocks[b].mx);
       }
       else{
@@ -133,6 +141,7 @@ struct structB{
         int s=max(start,l);
         int e=min(end,r);
         for(int i=s;i<=e;i++){
+          ops++;
           maxi=max(sensors[i],maxi);
         }
       }
@@ -148,6 +157,7 @@ struct structB{
       int l=b*size;
       int r=min((b+1)*size-1,n-1);
       if(l>=start && r<=end){
+        ops++;
         total=(total+blocks[b].sum)%MOD;
       }
       else{
@@ -155,6 +165,7 @@ struct structB{
         int s=max(start,l);
         int e=min(end,r);
         for(int i=s;i<=e;i++){
+          ops++;
           total=(total+sensors[i]%MOD+MOD)%MOD;
         }
       }
@@ -169,12 +180,13 @@ struct structB{
     }
     return;
   }
+
+  ll get_cost(){
+    return ops;
+  }
+  
 };
 
 int main(){
-  vector<ll> A(256,0);
-  for(int i=0;i<256;i++) A[i]=i;
-  structB SQRTD=structB(256,A);
-  SQRTD.display();
   return 0;
 }
