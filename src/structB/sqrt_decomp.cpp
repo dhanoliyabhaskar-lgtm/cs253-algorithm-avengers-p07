@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <climits>
 using ll=long long;
 int MOD=998244353;
 using namespace std;
@@ -95,6 +96,72 @@ struct structB{
     }
   }
 
+  ll find_min(int start, int end){
+    int b1=start/size;
+    int b2=end/size;
+    ll mini=LLONG_MAX;
+    for(int b=b1;b<=b2;b++){
+      int l=b*size;
+      int r=min((b+1)*size-1,n-1);
+      if(l>=start && r<=end){
+        mini=min(mini,blocks[b].mn);
+      }
+      else{
+        push(b);
+        int s=max(start,l);
+        int e=min(end,r);
+        for(int i=s;i<=e;i++){
+          mini=min(sensors[i],mini);
+        }
+      }
+    }
+    return mini;
+  }
+
+  ll find_max(int start, int end){
+    int b1=start/size;
+    int b2=end/size;
+    ll maxi=LLONG_MIN;
+    for(int b=b1;b<=b2;b++){
+      int l=b*size;
+      int r=min((b+1)*size-1,n-1);
+      if(l>=start && r<=end){
+        maxi=max(maxi,blocks[b].mx);
+      }
+      else{
+        push(b);
+        int s=max(start,l);
+        int e=min(end,r);
+        for(int i=s;i<=e;i++){
+          maxi=max(sensors[i],maxi);
+        }
+      }
+    }
+    return maxi;
+  }
+
+  ll find_sum(int start, int end){
+    int b1=start/size;
+    int b2=end/size;
+    ll total=0;
+    for(int b=b1;b<=b2;b++){
+      int l=b*size;
+      int r=min((b+1)*size-1,n-1);
+      if(l>=start && r<=end){
+        total=(total+blocks[b].sum)%MOD;
+      }
+      else{
+        push(b);
+        int s=max(start,l);
+        int e=min(end,r);
+        for(int i=s;i<=e;i++){
+          total=(total+sensors[i]%MOD+MOD)%MOD;
+        }
+      }
+    }
+    return total;
+  }
+
   void display(){
     for(block_state q : blocks){
       cout<<q.mn<<" "<<q.mx<<" "<<q.sum<<"\n";
@@ -107,14 +174,7 @@ struct structB{
 int main(){
   vector<ll> A(256,0);
   for(int i=0;i<256;i++) A[i]=i;
-  A[0]=MOD;
   structB SQRTD=structB(256,A);
-  SQRTD.display();
-  cout<<"AFTER : \n";
-  SQRTD.update(64,255,0,20);
-  SQRTD.display();
-  cout<<"FINAL : \n";
-  SQRTD.update(65,255,1,100);
   SQRTD.display();
   return 0;
 }
