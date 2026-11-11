@@ -1,8 +1,4 @@
-﻿#include <vector>
-#include <cstdint>
-#include <algorithm>
-#include <stdexcept>
-#include <iostream>
+﻿#include <bits/stdc++.h>
 
 namespace oracle {
 
