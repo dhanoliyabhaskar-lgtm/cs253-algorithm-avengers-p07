@@ -6,8 +6,8 @@ Team Algorithm Avengers — CS 253 / MA 253
 |------|----------|--------|------|---------------|------------|
 | Bhaskar Dhanoliya | 250001013 | @dhanoliyabhaskar-lgtm | Architect | app/ | D3 |
 | Ajeet Kumar | 250041002 | @ajeetK-dot | Structure A owner | src/structA/ | D1 |
-| Arjun Kumar | 250001007 | @ | Analyst | bench/ | D6 |
-| Chandan Yadav | 250041010 | @mc250041010-lgtm | Oracle owner | oracle/ | D4 |
+| Arjun Kumar | 250001007 | @cse250001007 | Analyst | bench/ | D6 |
+| Chandan Yadav | 250041010 | @chandan41010 | Oracle owner | oracle/ | D4 |
 | Aryann Gothwal | 250001010 | @aryann-git | Adversary | adversary/ | D5 |
 | Faizan Beg Mirza | 250001029 | @FaizanBegMirza-cse250001029 | Structure B owner | src/structB/ | D2 |
 
