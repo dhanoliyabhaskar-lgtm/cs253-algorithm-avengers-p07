@@ -38,3 +38,42 @@ Initial array: [1, 2, 3, 4]
 Purpose:
 Check whether a zero-multiplier update correctly replaces old
 values, and whether a later partial update is applied correctly.
+
+
+## Test: Affine update composition order
+
+Purpose:
+Check that consecutive updates are applied in the correct order,
+including when a later query needs pending updates pushed down.
+
+Initial array:
+[1, 2, 3, 4]
+
+Use 0-based inclusive indices.
+
+Update 1:
+Apply x = 2*x + 1 to [0, 3].
+Expected array: [3, 5, 7, 9]
+
+Update 2:
+Apply x = 3*x + 4 to [0, 3].
+Expected array: [13, 19, 25, 31]
+
+Expected queries (min, max, sum_mod):
+Query [0, 3]: (13, 31, 88)
+Query [1, 2]: (19, 25, 44)
+Query [0, 0]: (13, 13, 13)
+Query [3, 3]: (31, 31, 31)
+
+Why this catches bugs:
+The combined update must be:
+3*(2*x + 1) + 4 = 6*x + 7.
+
+Reversing the order incorrectly gives:
+2*(3*x + 4) + 1 = 6*x + 9.
+
+Partial-range queries check whether pending updates are
+correctly passed to child nodes.
+
+Status:
+Expected results calculated manually; implementation not yet tested.
