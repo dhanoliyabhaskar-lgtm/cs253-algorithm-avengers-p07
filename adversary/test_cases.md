@@ -72,6 +72,29 @@ The combined update must be:
 Reversing the order incorrectly gives:
 2*(3*x + 4) + 1 = 6*x + 9.
 
+
+## Assignment followed by a partial update
+
+Ranges are 0-based and inclusive.
+
+1. Start with [1, 2, 3, 4].
+2. Apply x = 0*x + 5 to [0, 3].
+   Array becomes [5, 5, 5, 5].
+3. Apply x = x + 2 to [1, 2].
+   Array becomes [5, 7, 7, 5].
+
+Expected query results:
+
+| Range | Minimum | Maximum | Sum modulo 998244353 |
+|-------|---------|---------|----------------------|
+| [0,3] | 5       | 7       | 24                   |
+| [1,2] | 7       | 7       | 14                   |
+| [0,0] | 5       | 5       | 5                    |
+| [3,3] | 5       | 5       | 5                    |
+
+Purpose:
+The full-range assignment must be pushed correctly before
+updating only the middle elements. The endpoints must stay 5.
 Partial-range queries check whether pending updates are
 correctly passed to child nodes.
 
