@@ -31,7 +31,7 @@ struct structB{
       if(i%size==0){
         w.mn=sensors[i];
         w.mx=sensors[i];
-        w.sum=sensors[i]%MOD;
+        w.sum=(sensors[i]%MOD+MOD)%MOD;
       } else{
         w.mn=min(w.mn,sensors[i]);
         w.mx=max(w.mx,sensors[i]);
@@ -60,7 +60,7 @@ struct structB{
     block_state& w=blocks[b];
     w.mn=sensors[start];
     w.mx=sensors[start];
-    w.sum=sensors[start];
+    w.sum=(sensors[start]%MOD+MOD)%MOD;
     for(int i=start+1;i<end;i++){
       w.mn=min(w.mn,sensors[i]);
       w.mx=max(w.mx,sensors[i]);
