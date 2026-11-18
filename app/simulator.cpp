@@ -1,4 +1,4 @@
-// simulator.cpp  (chhota version)
+// app/simulator.cpp
 // Use: simulator [file] [--verify]
 #include <iostream>
 #include <fstream>
@@ -6,10 +6,13 @@
 #include <string>
 #include "range_structure.hpp"
 
-struct Op { char type; int l, r; ll g, o; };
+using namespace std;
+using rs::QueryResult;
 
-// structure par saare ops chalao, queries ke answers out me daalo, time return karo
-double run(RangeStructure& s, const vector<ll>& init, const vector<Op>& ops, vector<QueryResult>& out) {
+struct Op { char type; int l, r; long long g, o; };
+
+// ops chalao, query ke answers out me daalo, time (seconds) return karo
+double run(rs::RangeStructure& s, const vector<long long>& init, const vector<Op>& ops, vector<QueryResult>& out) {
     s.build(init);
     auto t0 = chrono::high_resolution_clock::now();
     for (const Op& op : ops) {
@@ -29,7 +32,7 @@ int main(int argc, char** argv) {
     }
 
     ifstream file;
-    istream* in = &cin;                       // file na mile to cin
+    istream* in = &cin;                    // file na di ho to cin
     if (!path.empty()) {
         file.open(path);
         if (!file) { cout << "File nahi khuli: " << path << "\n"; return 1; }
@@ -38,8 +41,8 @@ int main(int argc, char** argv) {
 
     int n, q;
     *in >> n;
-    vector<ll> init(n);
-    for (ll& x : init) *in >> x;
+    vector<long long> init(n);
+    for (auto& x : init) *in >> x;
     *in >> q;
     vector<Op> ops(q);
     for (Op& op : ops) {
@@ -47,20 +50,20 @@ int main(int argc, char** argv) {
         if (op.type == 'U') *in >> op.g >> op.o;
     }
 
-    SegTree A;
-    Sqrt B;
+    rs::A_Adapter A;
+    rs::B_Adapter B;
     vector<QueryResult> ra, rb;
     double ta = run(A, init, ops, ra);
     double tb = run(B, init, ops, rb);
-    cout << "Segment Tree : " << ta << " s, " << q / ta << " ops/sec\n";
-    cout << "Sqrt Decomp  : " << tb << " s, " << q / tb << " ops/sec\n";
+    cout << "Structure A (Segment Tree) : " << ta << " s, " << q / ta << " ops/sec\n";
+    cout << "Structure B (Sqrt Decomp)  : " << tb << " s, " << q / tb << " ops/sec\n";
 
     if (verify) {
-        Oracle O;
+        rs::Oracle_Adapter O;
         vector<QueryResult> ro;
         run(O, init, ops, ro);
-        cout << "A vs Oracle  : " << (ra == ro ? "OK" : "MISMATCH") << "\n";
-        cout << "B vs Oracle  : " << (rb == ro ? "OK" : "MISMATCH") << "\n";
+        cout << "A vs Oracle : " << (ra == ro ? "OK" : "MISMATCH") << "\n";
+        cout << "B vs Oracle : " << (rb == ro ? "OK" : "MISMATCH") << "\n";
     }
     return 0;
 }
