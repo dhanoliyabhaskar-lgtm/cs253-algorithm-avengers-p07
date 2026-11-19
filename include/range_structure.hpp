@@ -17,9 +17,15 @@ namespace teamB {
 #undef main
 
 #define main main_O
+#ifndef __SIZEOF_INT128__        // 32-bit MinGW me __int128 nahi hota
+#define __int128 long long       // oracle me product ~1e18 se chhota hai, long long kaafi hai
+#endif
 namespace teamO {
 #include "../oracle/oracle.cpp"           // Oracle: oracle::ArrayOracle
 }
+#ifndef __SIZEOF_INT128__
+#undef __int128
+#endif
 #undef main
 
 // ================= Yahan se tumhara kaam =================
