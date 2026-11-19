@@ -1,7 +1,7 @@
 // app/simulator.cpp
 // Use: simulator [file] [--verify]
 // File format: har case = "n q" / n values / q ops (U l r g o | Q l r | S l r)
-//              '#' wali lines aur blank lines skip. "# EXPECTED a b c" = upar wali query ka sahi answer.
+// '#' wali lines aur blank lines skip. "# EXPECTED a b c" = upar wali query ka sahi answer.
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -14,10 +14,14 @@ using namespace std;
 using rs::QueryResult;
 
 struct Op {
-    char type; int l, r; long long g, o;
+    char type; int l, r; 
+    long long g, o;
     vector<long long> exp;               // EXPECTED answer (khali ho sakta hai)
 };
-struct Case { vector<long long> init; vector<Op> ops; };
+struct Case { 
+    vector<long long> init; 
+    vector<Op> ops; 
+};
 
 // ---------- file padhna ----------
 vector<Case> read_cases(istream& in) {
@@ -103,7 +107,9 @@ int wrong_vs_oracle(const Case& c, const vector<QueryResult>& res, const vector<
     }
     return bad;
 }
-string status(int bad) { return bad == 0 ? "OK" : to_string(bad) + " galat"; }
+string status(int bad) { 
+    return bad == 0 ? "OK" : to_string(bad) + " galat"; 
+}
 
 int run_main(int argc, char** argv) {
     bool verify = false;
