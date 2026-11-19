@@ -1,10 +1,10 @@
 # Additional adversarial cases, numbered 15 through 26.
-# The first number is the count of cases in this standalone file.
+
 # Indices are 0-based and ranges are inclusive. U applies gain * x + offset.
 # Q reports exact min, exact max, and sum mod 998244353. S reports only the modular sum.
 # Skip blank lines and lines starting with # when parsing input.
 
-12
+
 
 # Case 15 - Composed offset crosses the modulus before a partial query
 8 8
