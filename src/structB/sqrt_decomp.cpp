@@ -24,14 +24,15 @@ struct structB{
     sensors=initial;
     n=len;
     size=ceil(sqrt(len));
-    blocks.resize(size);
+    int bsize=(n+size-1)/size;
+    blocks.resize(bsize);
     for(int i=0;i<n;i++){
       int b=i/size;
       block_state& w=blocks[b];
       if(i%size==0){
         w.mn=sensors[i];
         w.mx=sensors[i];
-        w.sum=sensors[i]%MOD;
+        w.sum=(sensors[i]%MOD+MOD)%MOD;
       } else{
         w.mn=min(w.mn,sensors[i]);
         w.mx=max(w.mx,sensors[i]);
@@ -60,7 +61,7 @@ struct structB{
     block_state& w=blocks[b];
     w.mn=sensors[start];
     w.mx=sensors[start];
-    w.sum=sensors[start];
+    w.sum=(sensors[start]%MOD+MOD)%MOD;
     for(int i=start+1;i<end;i++){
       w.mn=min(w.mn,sensors[i]);
       w.mx=max(w.mx,sensors[i]);
@@ -75,7 +76,8 @@ struct structB{
     w.mn=w.mn*g+o;
     w.mx=w.mx*g+o;
     if(g<0) swap(w.mn,w.mx);
-    w.sum=(w.sum*(g%MOD)+size*(o%MOD)+MOD)%MOD;
+    int length=min((b+1)*size,n)-b*size;
+    w.sum=((w.sum*(g%MOD+MOD))%MOD+(length*(o%MOD+MOD))%MOD+MOD)%MOD;
     w.gain=g*w.gain;
     w.offset=(g*w.offset)+o;
   }
