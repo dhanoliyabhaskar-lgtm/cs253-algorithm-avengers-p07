@@ -111,11 +111,36 @@ string status(int bad) {
     return bad == 0 ? "OK" : to_string(bad) + " galat"; 
 }
 
+// ---------- har query ka answer print karna ----------
+void show(char type, const QueryResult& r) {
+    if (type == 'S') cout << r.sum_mod;                              // S: sirf sum
+    else cout << r.min_val << " " << r.max_val << " " << r.sum_mod;  // Q: min max sum
+}
+void print_queries(const Case& c, const vector<QueryResult>& ra,
+                   const vector<QueryResult>& rb, const vector<QueryResult>& ro) {
+    int k = 0;
+    for (const Op& op : c.ops) {
+        if (op.type == 'U') continue;
+        cout << "   " << op.type << " " << op.l << " " << op.r << "  ->  A: ";
+        show(op.type, ra[k]);
+        cout << " | B: ";
+        show(op.type, rb[k]);
+        if (!ro.empty()) { cout << " | Oracle: "; show(op.type, ro[k]); }
+        if (!op.exp.empty()) {
+            cout << " | Expected:";
+            for (long long x : op.exp) cout << " " << x;
+        }
+        cout << "\n";
+        k++;
+    }
+}
+
 int run_main(int argc, char** argv) {
-    bool verify = false;
+    bool verify = false, print = false;
     string path;
     for (int i = 1; i < argc; i++) {
         if (string(argv[i]) == "--verify") verify = true;
+        else if (string(argv[i]) == "--print") print = true;
         else path = argv[i];
     }
 
@@ -154,6 +179,7 @@ int run_main(int argc, char** argv) {
         }
         failed += ba + bb;
         cout << "\n";
+        if (print) print_queries(c, ra, rb, ro);
     }
     cout << "\nCases: " << cases.size() << ", operations: " << totOps << "\n";
     cout << "Structure A (Segment Tree) : " << totA << " s, " << totOps / totA << " ops/sec\n";
